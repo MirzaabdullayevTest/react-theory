@@ -1,26 +1,8 @@
 import { Component } from 'react'
 import Car from './car'
+import classes from './style.module.css'
 
 class App extends Component {
-    state = {  // object
-        cars: [
-            {
-                name: "Mazda 4",
-                year: 2020
-            },
-            {
-                name: "Ford",
-                year: 2015
-            },
-            {
-                name: "Ferari",
-                year: 2022
-            },
-        ],
-        title: 'React components',
-        showCars: false
-    }
-
     changeTitleHandler = (e) => {
         this.setState({
             title: 'Changed!'
@@ -35,7 +17,8 @@ class App extends Component {
 
     inputChangeHandler = (e) => {
         this.setState({
-            title: e.target.value
+            title: e.target.value,
+            val: e.target.value,
         })
     }
 
@@ -54,7 +37,22 @@ class App extends Component {
         })
     }
 
+    // componentDidMount
+    componentDidMount() {
+        console.log('componentDidMount');
+    }
+
     render() {
+        console.log('render');
+        // console.log(classes);
+        const cls = []
+
+        if (this.state.val.length <= 4) {
+            cls.push(classes.error)
+        } else {
+            cls.push(classes.success)
+        }
+
         const appStyle = {
             textAlign: 'center',
         }
@@ -80,16 +78,42 @@ class App extends Component {
 
         return (
             <div className="App" style={appStyle} >
-                <h1 >
+                <h1>
                     {this.state.title}
                 </h1>
-                <input type="text" onChange={this.inputChangeHandler} />
+                <input type="text"
+                    onChange={this.inputChangeHandler}
+                    className={cls.join(' ')} />
                 <br />
                 <button onClick={this.toggleCarsHandler}>Click</button>
                 <br />
                 {div}
             </div>
         )
+    }
+
+    constructor(props) {
+        super(props)
+        console.log('constructor');
+        this.state = {  // object
+            cars: [
+                {
+                    name: "Mazda 4",
+                    year: 2020
+                },
+                {
+                    name: "Ford",
+                    year: 2015
+                },
+                {
+                    name: "Ferari",
+                    year: 2022
+                },
+            ],
+            title: this.props.title,
+            showCars: false,
+            val: ''
+        }
     }
 }
 
